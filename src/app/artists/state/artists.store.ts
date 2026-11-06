@@ -72,32 +72,55 @@ export const ArtistsStore = signalStore(
 
   // -------------------------------------------------------------------------
   // EXERCISE 3 — derived state with withComputed
-  //
-  // Replace every WORKSHOP PLACEHOLDER with a real computed signal. Compose the
-  // prepared helpers (matchesNameSearch, matchesGenre, matchesFavouriteStatus,
-  // toArtistRow, compareArtists) here. Keep the functions pure, and sort a
-  // copy — never the state array itself.
   // -------------------------------------------------------------------------
-  withComputed((store) => ({
-    // WORKSHOP PLACEHOLDER (Exercise 3): every artist, unfiltered and unsorted.
-    allArtistsRows: computed((): ArtistRow[] => {
-      const favouriteIds = new Set(store.favouriteArtistIds());
-      return store.artists().map((artist) => toArtistRow(artist, favouriteIds));
-    }),
-    // WORKSHOP PLACEHOLDER (Exercise 3): saved favourites, filtered by favouritesView and sorted.
-    favouriteArtistRows: computed((): ArtistRow[] => []),
-    // WORKSHOP PLACEHOLDER (Exercise 3): total number of favourites, ignoring filters.
-    favouriteCount: computed(() => 0),
-    // WORKSHOP PLACEHOLDER (Exercise 3): number of rows on each route.
-    allArtistsVisibleCount: computed(() => 0),
-    favouritesVisibleCount: computed(() => 0),
-    // WORKSHOP PLACEHOLDER (Exercise 3): each genre in the full dataset once, A→Z.
-    genreOptions: computed((): string[] => []),
+  withComputed((store) => {
+    // Looking up IDs in a Set is cheaper than `includes` for every row.
+    const favouriteIdSet = computed(() => new Set(store.favouriteArtistIds()));
 
-    // Prepared examples (used by the UI from the start).
-    isLoading: computed(() => store.loadStatus() === 'loading'),
-    canChangeFavourites: computed(() => store.loadStatus() === 'loaded' && !store.isSavingFavourite()),
-  })),
+    const allArtistsRows = computed(() => {
+      const view = store.artistsView();
+      const favouriteIds = favouriteIdSet();
+      // `map` returns a new array, so sorting it never mutates source state.
+      return store
+        .artists()
+        .map((artist) => toArtistRow(artist, favouriteIds))
+        .filter(
+          (row) =>
+            matchesNameSearch(row, view.search) &&
+            matchesGenre(row, view.genre) &&
+            matchesFavouriteStatus(row.isFavourite, view.favouriteStatus),
+        )
+        .sort(compareArtists(view.sortField, view.sortDirection));
+    });
+
+    const favouriteArtistRows = computed(() => {
+      const view = store.favouritesView();
+      const favouriteIds = favouriteIdSet();
+      return store
+        .artists()
+        .filter(
+          (artist) =>
+            favouriteIds.has(artist.id) && matchesNameSearch(artist, view.search) && matchesGenre(artist, view.genre),
+        )
+        .map((artist) => toArtistRow(artist, favouriteIds))
+        .sort(compareArtists(view.sortField, view.sortDirection));
+    });
+
+    return {
+      allArtistsRows,
+      favouriteArtistRows,
+      favouriteCount: computed(() => store.favouriteArtistIds().length),
+      allArtistsVisibleCount: computed(() => allArtistsRows().length),
+      favouritesVisibleCount: computed(() => favouriteArtistRows().length),
+      genreOptions: computed(() =>
+        [...new Set(store.artists().map((artist) => artist.genre))].sort((a, b) => a.localeCompare(b)),
+      ),
+
+      // Prepared examples (used by the UI from the start).
+      isLoading: computed(() => store.loadStatus() === 'loading'),
+      canChangeFavourites: computed(() => store.loadStatus() === 'loaded' && !store.isSavingFavourite()),
+    };
+  }),
 
   withMethods((store, api = inject(ArtistsApiService)) => {
     // -----------------------------------------------------------------------

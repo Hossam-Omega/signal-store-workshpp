@@ -111,12 +111,14 @@ export const ArtistsStore = signalStore(
   withMethods((store) => {
     // -----------------------------------------------------------------------
     // EXERCISE 1 — view settings with patchState
-    //
-    // Implement the five setters returned below. Each one changes a single
-    // field of `artistsView` or `favouritesView` (chosen by `view`) and must
-    // leave the other view untouched. Tip: a small helper function declared
-    // here keeps the setters short.
     // -----------------------------------------------------------------------
+    function updateView(view: ArtistsViewId, changes: Partial<ViewSettings>): void {
+      if (view === 'artists') {
+        patchState(store, (state) => ({ artistsView: { ...state.artistsView, ...changes } }));
+      } else {
+        patchState(store, (state) => ({ favouritesView: { ...state.favouritesView, ...changes } }));
+      }
+    }
 
     // -----------------------------------------------------------------------
     // EXERCISES 2 and 4 — the methods only dispatch request events
@@ -129,19 +131,19 @@ export const ArtistsStore = signalStore(
     return {
       // Exercise 1
       setSearch(view: ArtistsViewId, search: string): void {
-        workshopTodo('Exercise 1', 'setSearch', { view, search });
+        updateView(view, { search });
       },
       setGenre(view: ArtistsViewId, genre: string | null): void {
-        workshopTodo('Exercise 1', 'setGenre', { view, genre });
+        updateView(view, { genre });
       },
       setSortField(view: ArtistsViewId, sortField: SortField): void {
-        workshopTodo('Exercise 1', 'setSortField', { view, sortField });
+        updateView(view, { sortField });
       },
       setSortDirection(view: ArtistsViewId, sortDirection: SortDirection): void {
-        workshopTodo('Exercise 1', 'setSortDirection', { view, sortDirection });
+        updateView(view, { sortDirection });
       },
       setFavouriteStatus(favouriteStatus: FavouriteStatusFilter): void {
-        workshopTodo('Exercise 1', 'setFavouriteStatus', { favouriteStatus });
+        patchState(store, (state) => ({ artistsView: { ...state.artistsView, favouriteStatus } }));
       },
 
       // Exercise 2

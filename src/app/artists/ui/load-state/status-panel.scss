@@ -1,0 +1,34 @@
+.panel {
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface);
+
+  h2 {
+    margin: 0 0 8px;
+    font: var(--mat-sys-title-medium);
+  }
+
+  p {
+    margin: 8px 0;
+  }
+
+  &.info {
+    background: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+  }
+
+  &.error {
+    background: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+  }
+
+  &.compact {
+    padding: 10px 16px;
+    margin-top: 8px;
+  }
+}
+
+.saving-slot {
+  min-height: 4px;
+}

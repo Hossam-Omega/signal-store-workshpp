@@ -1,0 +1,51 @@
+<div class="table-container">
+  <table mat-table [dataSource]="rows()" [trackBy]="trackById">
+    <caption class="visually-hidden">{{ caption() }}</caption>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef scope="col">Name</th>
+      <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="age">
+      <th mat-header-cell *matHeaderCellDef scope="col" class="numeric">Age</th>
+      <td mat-cell *matCellDef="let row" class="numeric">{{ row.age }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="gender">
+      <th mat-header-cell *matHeaderCellDef scope="col">Gender</th>
+      <td mat-cell *matCellDef="let row">{{ row.gender }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="genre">
+      <th mat-header-cell *matHeaderCellDef scope="col">Genre</th>
+      <td mat-cell *matCellDef="let row">{{ row.genre }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="debutYear">
+      <th mat-header-cell *matHeaderCellDef scope="col" class="numeric">Debut year</th>
+      <td mat-cell *matCellDef="let row" class="numeric">{{ row.debutYear }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="favourite">
+      <th mat-header-cell *matHeaderCellDef scope="col">Favourite</th>
+      <td mat-cell *matCellDef="let row">
+        <button
+          type="button"
+          [attr.aria-label]="(row.isFavourite ? 'Remove ' : 'Add ') + row.name + (row.isFavourite ? ' from favourites' : ' to favourites')"
+          [attr.aria-pressed]="row.isFavourite"
+          [disabled]="favouriteActionsDisabled()"
+          (click)="favouriteToggle.emit(row)"
+          [class.is-favourite]="row.isFavourite"
+          [matButton]="row.isFavourite ? 'tonal' : 'outlined'"
+        >
+          <span class="star" aria-hidden="true">{{ row.isFavourite ? '★' : '☆' }}</span>
+          {{ row.isFavourite ? 'Remove' : 'Add' }}
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns" [attr.data-artist-id]="row.id"></tr>
+  </table>
+</div>

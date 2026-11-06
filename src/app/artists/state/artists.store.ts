@@ -120,13 +120,8 @@ export const ArtistsStore = signalStore(
       }
     }
 
-    // -----------------------------------------------------------------------
-    // EXERCISES 2 and 4 — the methods only dispatch request events
-    //
-    // Inject the Dispatcher here. loadArtists()/retryLoad() (Exercise 2) and
-    // addFavourite()/removeFavourite() (Exercise 4) each dispatch one request
-    // event from ./artists.events.ts: no HTTP calls in the store.
-    // -----------------------------------------------------------------------
+    // Exercises 2 and 4: the methods only dispatch request events.
+    const dispatcher = inject(Dispatcher);
 
     return {
       // Exercise 1
@@ -148,10 +143,10 @@ export const ArtistsStore = signalStore(
 
       // Exercise 2
       loadArtists(): void {
-        workshopTodo('Exercise 2', 'loadArtists');
+        dispatcher.dispatch(loadArtistsRequested());
       },
       retryLoad(): void {
-        workshopTodo('Exercise 2', 'retryLoad');
+        dispatcher.dispatch(loadArtistsRequested());
       },
 
       // Exercise 4
@@ -166,17 +161,24 @@ export const ArtistsStore = signalStore(
 
   // -------------------------------------------------------------------------
   // EXERCISE 2 — loading with events
-  //
-  // Add a withEventHandlers here with one handler per event of the
-  // loadArtistsRequested group. Each listens with store.events.on(...) and
-  // updates state with tap(() => patchState(store, ...)):
-  //  - onLoadArtistsRequested: loading, clear loadError
-  //  - onLoadArtistsRequestedSuccess: artists and favourite IDs from the
-  //    payload, loaded
-  //  - onLoadArtistsRequestedFail: error, loadError from the payload
-  // The prepared API event handler makes the HTTP call and dispatches the
-  // success or fail event.
   // -------------------------------------------------------------------------
+  withEventHandlers((store) => ({
+    onLoadArtistsRequested: store.events
+      .on(loadArtistsRequested)
+      .pipe(tap(() => patchState(store, { loadStatus: 'loading', loadError: null }))),
+
+    onLoadArtistsRequestedSuccess: store.events
+      .on(loadArtistsRequestedSuccess)
+      .pipe(
+        tap(({ payload: { artists, favouriteArtistIds } }) =>
+          patchState(store, { artists, favouriteArtistIds, loadStatus: 'loaded' }),
+        ),
+      ),
+
+    onLoadArtistsRequestedFail: store.events
+      .on(loadArtistsRequestedFail)
+      .pipe(tap(({ payload: message }) => patchState(store, { loadStatus: 'error', loadError: message }))),
+  })),
 
   // -------------------------------------------------------------------------
   // EXERCISE 4 — favourites with events, pending and error state

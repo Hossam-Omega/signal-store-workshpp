@@ -1,0 +1,54 @@
+{
+  "name": "signal-store-workshop",
+  "version": "1.0.0",
+  "description": "Hands-on NgRx Signal Store workshop: a prepared Angular Material UI and local API, with store exercises.",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": "^24.15.0 || >=26.0.0",
+    "pnpm": ">=12.16.0"
+  },
+  "scripts": {
+    "start": "concurrently --kill-others --kill-others-on-fail --names api,web --prefix-colors blue,magenta \"pnpm:api\" \"pnpm:web\"",
+    "start:fail-mutations": "concurrently --kill-others --kill-others-on-fail --names api,web --prefix-colors blue,magenta \"node api/server.ts --fail-mutations\" \"pnpm:web\"",
+    "start:fail-first-load": "concurrently --kill-others --kill-others-on-fail --names api,web --prefix-colors blue,magenta \"node api/server.ts --fail-first-loads=1\" \"pnpm:web\"",
+    "api": "node api/server.ts",
+    "web": "ng serve",
+    "build": "ng build",
+    "test": "node scripts/run-tests.mjs stage",
+    "test:workshop": "node scripts/run-tests.mjs workshop",
+    "test:coverage": "node scripts/run-tests.mjs coverage",
+    "test:api": "vitest run --config vitest.api.config.ts",
+    "typecheck:api": "tsc -p api/tsconfig.json",
+    "data:reset": "node api/reset.ts",
+    "ng": "ng"
+  },
+  "dependencies": {
+    "@angular/cdk": "22.2.6",
+    "@angular/common": "22.2.4",
+    "@angular/compiler": "22.2.4",
+    "@angular/core": "22.2.4",
+    "@angular/forms": "22.2.4",
+    "@angular/material": "22.2.6",
+    "@angular/platform-browser": "22.2.4",
+    "@angular/router": "22.2.4",
+    "@ngrx/operators": "22.0.1",
+    "@ngrx/signals": "22.0.1",
+    "rxjs": "7.8.2",
+    "tslib": "2.8.1"
+  },
+  "devDependencies": {
+    "@angular/build": "22.2.6",
+    "@angular/cli": "22.2.6",
+    "@angular/compiler-cli": "22.2.4",
+    "@types/node": "26.6.6",
+    "@vitest/coverage-v8": "5.1.0",
+    "concurrently": "10.0.6",
+    "jsdom": "30.1.3",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0"
+  }
+}

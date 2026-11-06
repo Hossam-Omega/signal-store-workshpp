@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4 # version comes from "packageManager" in package.json
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Branch-appropriate tests: UI + API, plus the exercises completed on this branch.
+      - run: pnpm test
+
+      - run: pnpm build
+
+      # The 80% coverage target only applies once every exercise is complete.
+      - name: Coverage (completed store only)
+        run: |
+          if node -e "process.exit(require('./workshop-stage.json').completedExercises === 4 ? 0 : 1)"; then
+            pnpm test:coverage
+          else
+            echo "Skipping coverage: this branch intentionally has unfinished store exercises."
+          fi

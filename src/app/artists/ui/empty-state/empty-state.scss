@@ -1,0 +1,15 @@
+.empty {
+  padding: 32px 20px;
+  text-align: center;
+  border: 1px dashed var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  color: var(--mat-sys-on-surface-variant);
+}
+h2 {
+  margin: 0 0 8px;
+  font: var(--mat-sys-title-medium);
+  color: var(--mat-sys-on-surface);
+}
+p {
+  margin: 0;
+}

@@ -1,0 +1,38 @@
+<header class="page-header">
+  <h1>All artists</h1>
+  <p class="summary" aria-live="polite" data-testid="summary">
+    @if (store.loadStatus() === 'loaded') {
+      Showing {{ store.allArtistsVisibleCount() }} of {{ store.artists().length }} artists ·
+      {{ store.favouriteCount() }} favourites in total
+    }
+  </p>
+</header>
+
+<app-artist-view-controls
+  [settings]="store.artistsView()"
+  [favouriteStatus]="store.artistsView().favouriteStatus"
+  [genres]="store.genreOptions()"
+  (searchChange)="store.setSearch('artists', $event)"
+  (genreChange)="store.setGenre('artists', $event)"
+  (favouriteStatusChange)="store.setFavouriteStatus($event)"
+  (sortFieldChange)="store.setSortField('artists', $event)"
+  (sortDirectionChange)="store.setSortDirection('artists', $event)"
+/>
+
+<app-favourite-save-state [isSaving]="store.isSavingFavourite()" [error]="store.mutationError()" />
+<app-load-state [status]="store.loadStatus()" [error]="store.loadError()" (retry)="store.retryLoad()" />
+
+@if (store.loadStatus() === 'loaded') {
+  @if (store.artists().length === 0) {
+    <app-empty-state heading="No artists" message="The API returned an empty artist list." />
+  } @else if (store.allArtistsRows().length === 0) {
+    <app-empty-state heading="No matches" message="No artists match the current search and filters." />
+  } @else {
+    <app-artists-table
+      caption="All artists"
+      [rows]="store.allArtistsRows()"
+      [favouriteActionsDisabled]="!store.canChangeFavourites()"
+      (favouriteToggle)="toggleFavourite($event)"
+    />
+  }
+}

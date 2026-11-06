@@ -113,12 +113,26 @@ export const ArtistsStore = signalStore(
 
     // -----------------------------------------------------------------------
     // EXERCISE 2 — loading with rxMethod
-    //
-    // Create an rxMethod<void> here that sets loadStatus/loadError, calls
-    // api.getArtists() with switchMap, and handles success and failure with
-    // tapResponse (use describeApiError for the message). Then call it from
-    // loadArtists() and retryLoad() below.
     // -----------------------------------------------------------------------
+    const loadArtists = rxMethod<void>(
+      pipe(
+        tap(() => patchState(store, { loadStatus: 'loading', loadError: null })),
+        // switchMap: a newer load makes an older, still-pending response irrelevant.
+        switchMap(() =>
+          api.getArtists().pipe(
+            tapResponse({
+              next: ({ artists, favouriteArtistIds }) =>
+                patchState(store, { artists, favouriteArtistIds, loadStatus: 'loaded' }),
+              error: (error) =>
+                patchState(store, {
+                  loadStatus: 'error',
+                  loadError: describeApiError(error, 'Could not load artists.'),
+                }),
+            }),
+          ),
+        ),
+      ),
+    );
 
     // -----------------------------------------------------------------------
     // EXERCISE 4 — favourites with pending and error state
@@ -149,10 +163,10 @@ export const ArtistsStore = signalStore(
 
       // Exercise 2
       loadArtists(): void {
-        workshopTodo('Exercise 2', 'loadArtists');
+        loadArtists();
       },
       retryLoad(): void {
-        workshopTodo('Exercise 2', 'retryLoad');
+        loadArtists();
       },
 
       // Exercise 4

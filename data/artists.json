@@ -1,0 +1,202 @@
+[
+  {
+    "id": "artist-001",
+    "name": "Aria Velloso",
+    "age": 34,
+    "gender": "Female",
+    "genre": "Jazz",
+    "debutYear": 2012
+  },
+  {
+    "id": "artist-002",
+    "name": "Bram Holloway",
+    "age": 52,
+    "gender": "Male",
+    "genre": "Rock",
+    "debutYear": 1995
+  },
+  {
+    "id": "artist-003",
+    "name": "Cleo Marchetti",
+    "age": 27,
+    "gender": "Female",
+    "genre": "Pop",
+    "debutYear": 2017
+  },
+  {
+    "id": "artist-004",
+    "name": "Dorian Achebe",
+    "age": 41,
+    "gender": "Male",
+    "genre": "Jazz",
+    "debutYear": 2006
+  },
+  {
+    "id": "artist-005",
+    "name": "Elske Varga",
+    "age": 34,
+    "gender": "Female",
+    "genre": "Folk",
+    "debutYear": 2010
+  },
+  {
+    "id": "artist-006",
+    "name": "Finn Okonkwo-Reyes",
+    "age": 23,
+    "gender": "Male",
+    "genre": "Hip-hop",
+    "debutYear": 2021
+  },
+  {
+    "id": "artist-007",
+    "name": "Gale Moreau",
+    "age": 38,
+    "gender": "Non-binary",
+    "genre": "Electronic",
+    "debutYear": 2010
+  },
+  {
+    "id": "artist-008",
+    "name": "Hana Lindqvist",
+    "age": 61,
+    "gender": "Female",
+    "genre": "Classical",
+    "debutYear": 1984
+  },
+  {
+    "id": "artist-009",
+    "name": "Ivo Castellan",
+    "age": 45,
+    "gender": "Male",
+    "genre": "Folk",
+    "debutYear": 2001
+  },
+  {
+    "id": "artist-010",
+    "name": "Juno Takamura",
+    "age": 29,
+    "gender": "Female",
+    "genre": "Electronic",
+    "debutYear": 2016
+  },
+  {
+    "id": "artist-011",
+    "name": "Kip Adeyemi",
+    "age": 19,
+    "gender": "Male",
+    "genre": "Hip-hop",
+    "debutYear": 2024
+  },
+  {
+    "id": "artist-012",
+    "name": "Lumi Ferreira",
+    "age": 27,
+    "gender": "Female",
+    "genre": "Pop",
+    "debutYear": 2018
+  },
+  {
+    "id": "artist-013",
+    "name": "Mara Quill",
+    "age": 48,
+    "gender": "Female",
+    "genre": "Rock",
+    "debutYear": 1999
+  },
+  {
+    "id": "artist-014",
+    "name": "Mara Quill",
+    "age": 31,
+    "gender": "Female",
+    "genre": "Folk",
+    "debutYear": 2014
+  },
+  {
+    "id": "artist-015",
+    "name": "Nico Valente",
+    "age": 56,
+    "gender": "Male",
+    "genre": "Classical",
+    "debutYear": 1990
+  },
+  {
+    "id": "artist-016",
+    "name": "Odile Brandt",
+    "age": 72,
+    "gender": "Female",
+    "genre": "Jazz",
+    "debutYear": 1972
+  },
+  {
+    "id": "artist-017",
+    "name": "Pax Delacroix",
+    "age": 36,
+    "gender": "Non-binary",
+    "genre": "Pop",
+    "debutYear": 2010
+  },
+  {
+    "id": "artist-018",
+    "name": "Quentin Mabry",
+    "age": 41,
+    "gender": "Male",
+    "genre": "Rock",
+    "debutYear": 2004
+  },
+  {
+    "id": "artist-019",
+    "name": "Rosa Itzel",
+    "age": 25,
+    "gender": "Female",
+    "genre": "Hip-hop",
+    "debutYear": 2019
+  },
+  {
+    "id": "artist-020",
+    "name": "Soren Vale",
+    "age": 67,
+    "gender": "Male",
+    "genre": "Folk",
+    "debutYear": 1978
+  },
+  {
+    "id": "artist-021",
+    "name": "Talia Osei",
+    "age": 33,
+    "gender": "Female",
+    "genre": "Electronic",
+    "debutYear": 2013
+  },
+  {
+    "id": "artist-022",
+    "name": "Ulrich Penn",
+    "age": 45,
+    "gender": "Male",
+    "genre": "Classical",
+    "debutYear": 2003
+  },
+  {
+    "id": "artist-023",
+    "name": "Vesna Kovac",
+    "age": 29,
+    "gender": "Female",
+    "genre": "Rock",
+    "debutYear": 2015
+  },
+  {
+    "id": "artist-024",
+    "name": "Wren Halvorsen",
+    "age": 38,
+    "gender": "Non-binary",
+    "genre": "Jazz",
+    "debutYear": 2008
+  },
+  {
+    "id": "artist-025",
+    "name": "Yusuf Arkwright",
+    "age": 50,
+    "gender": "Male",
+    "genre": "Electronic",
+    "debutYear": 1998
+  }
+]

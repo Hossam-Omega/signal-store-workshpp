@@ -1,0 +1,16 @@
+<a class="skip-link" href="#main">Skip to content</a>
+
+<mat-toolbar class="toolbar">
+  <span class="brand">Artists · Signal Store workshop</span>
+  <nav aria-label="Main">
+    <a matButton routerLink="/artists" routerLinkActive="active" ariaCurrentWhenActive="page">All artists</a>
+    <a matButton routerLink="/favourites" routerLinkActive="active" ariaCurrentWhenActive="page">
+      My favourites
+      <span class="count" data-testid="favourite-count" aria-label="favourites">{{ store.favouriteCount() }}</span>
+    </a>
+  </nav>
+</mat-toolbar>
+
+<main id="main" class="content">
+  <router-outlet />
+</main>

@@ -1,0 +1,22 @@
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+}
+
+.numeric {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+button {
+  min-width: 112px;
+}
+
+.star {
+  margin-inline-end: 4px;
+}

@@ -1,0 +1,47 @@
+<div class="controls" role="search">
+  <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Search by name</mat-label>
+    <input matInput type="search" autocomplete="off" [value]="settings().search" (input)="onSearchInput($event)" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" floatLabel="always">
+    <mat-label>Genre</mat-label>
+    <mat-select placeholder="All genres" [value]="settings().genre" (selectionChange)="genreChange.emit($event.value)">
+      <mat-option [value]="null">All genres</mat-option>
+      @for (genre of genres(); track genre) {
+        <mat-option [value]="genre">{{ genre }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  @if (favouriteStatus(); as status) {
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Favourite status</mat-label>
+      <mat-select [value]="status" (selectionChange)="favouriteStatusChange.emit($event.value)">
+        @for (option of favouriteStatusOptions; track option.value) {
+          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  }
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Sort by</mat-label>
+    <mat-select [value]="settings().sortField" (selectionChange)="sortFieldChange.emit($event.value)">
+      @for (option of sortFieldOptions; track option.value) {
+        <mat-option [value]="option.value">{{ option.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-button-toggle-group
+    class="direction"
+    aria-label="Sort direction"
+    hideSingleSelectionIndicator
+    [value]="settings().sortDirection"
+    (change)="sortDirectionChange.emit($event.value)"
+  >
+    <mat-button-toggle value="asc">Ascending</mat-button-toggle>
+    <mat-button-toggle value="desc">Descending</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

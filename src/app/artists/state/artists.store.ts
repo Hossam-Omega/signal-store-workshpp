@@ -32,7 +32,6 @@ import {
   SortField,
   ViewSettings,
 } from './artists-view.model';
-import { workshopTodo } from './workshop-todo';
 
 /*
  * ===========================================================================
@@ -173,10 +172,10 @@ export const ArtistsStore = signalStore(
 
       // Exercise 4
       addFavourite(artistId: string): void {
-        workshopTodo('Exercise 4', 'addFavourite', { artistId });
+        dispatcher.dispatch(favouriteAddRequested(artistId));
       },
       removeFavourite(artistId: string): void {
-        workshopTodo('Exercise 4', 'removeFavourite', { artistId });
+        dispatcher.dispatch(favouriteRemoveRequested(artistId));
       },
     };
   }),
@@ -204,15 +203,25 @@ export const ArtistsStore = signalStore(
 
   // -------------------------------------------------------------------------
   // EXERCISE 4 — favourites with events, pending and error state
-  //
-  // Add a withEventHandlers here. One handler can listen to several events:
-  // store.events.on(favouriteAddRequested, favouriteRemoveRequested).
-  //  - onFavouriteChangeRequested: isSavingFavourite, clear mutationError
-  //  - onFavouriteChangeRequestedSuccess: favouriteArtistIds from the payload
-  //    (the server's list is authoritative), stop saving
-  //  - onFavouriteChangeRequestedFail: mutationError from the payload, stop
-  //    saving
   // -------------------------------------------------------------------------
+  withEventHandlers((store) => ({
+    onFavouriteChangeRequested: store.events
+      .on(favouriteAddRequested, favouriteRemoveRequested)
+      .pipe(tap(() => patchState(store, { isSavingFavourite: true, mutationError: null }))),
+
+    // Trust the server's complete list instead of guessing locally.
+    onFavouriteChangeRequestedSuccess: store.events
+      .on(favouriteAddRequestedSuccess, favouriteRemoveRequestedSuccess)
+      .pipe(
+        tap(({ payload: { favouriteArtistIds } }) =>
+          patchState(store, { favouriteArtistIds, isSavingFavourite: false }),
+        ),
+      ),
+
+    onFavouriteChangeRequestedFail: store.events
+      .on(favouriteAddRequestedFail, favouriteRemoveRequestedFail)
+      .pipe(tap(({ payload: message }) => patchState(store, { isSavingFavourite: false, mutationError: message }))),
+  })),
 
   // Prepared: the first component that injects the store triggers the initial load.
   withHooks({

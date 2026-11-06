@@ -224,7 +224,7 @@ pnpm test:workshop   # all 41 store tests should pass
 - **Lifetime:** one root store. View settings live in the shared store but are
   separate for each route, so they survive navigation (not a browser refresh).
 
-Compare your file with the reference solution:
+Compare your file with the reference solution (design notes: [solution-notes.md](solution-notes.md)):
 
 ```sh
 git diff solution -- src/app/artists/state/artists.store.ts

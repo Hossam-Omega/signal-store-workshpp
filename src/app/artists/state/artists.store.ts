@@ -16,7 +16,6 @@ import {
 } from './artist-view.helpers';
 import {
   AllArtistsViewSettings,
-  ArtistRow,
   ArtistsViewId,
   FavouritesViewSettings,
   FavouriteStatusFilter,
@@ -25,7 +24,6 @@ import {
   SortField,
   ViewSettings,
 } from './artists-view.model';
-import { workshopTodo } from './workshop-todo';
 
 /*
  * ===========================================================================
@@ -159,12 +157,27 @@ export const ArtistsStore = signalStore(
 
     // -----------------------------------------------------------------------
     // EXERCISE 4 — favourites with pending and error state
-    //
-    // Create one rxMethod<FavouriteChange> here that serializes writes with
-    // concatMap, sets isSavingFavourite/mutationError, calls
-    // api.addFavourite or api.removeFavourite, and patches favouriteArtistIds
-    // from the response. Then call it from addFavourite() and removeFavourite().
     // -----------------------------------------------------------------------
+    const saveFavourite = rxMethod<FavouriteChange>(
+      // concatMap: run writes one after another, in the order they were requested.
+      // Never switchMap for writes: unsubscribing does not undo a server-side write.
+      concatMap(({ kind, artistId }) => {
+        patchState(store, { isSavingFavourite: true, mutationError: null });
+        const request$ = kind === 'add' ? api.addFavourite(artistId) : api.removeFavourite(artistId);
+        return request$.pipe(
+          // tapResponse catches errors, so one failure does not end the stream.
+          tapResponse({
+            // Trust the server's complete list instead of guessing locally.
+            next: ({ favouriteArtistIds }) => patchState(store, { favouriteArtistIds, isSavingFavourite: false }),
+            error: (error) =>
+              patchState(store, {
+                isSavingFavourite: false,
+                mutationError: describeApiError(error, 'Could not update favourites.'),
+              }),
+          }),
+        );
+      }),
+    );
 
     return {
       // Exercise 1
@@ -194,10 +207,10 @@ export const ArtistsStore = signalStore(
 
       // Exercise 4
       addFavourite(artistId: string): void {
-        workshopTodo('Exercise 4', 'addFavourite', { artistId });
+        saveFavourite({ kind: 'add', artistId });
       },
       removeFavourite(artistId: string): void {
-        workshopTodo('Exercise 4', 'removeFavourite', { artistId });
+        saveFavourite({ kind: 'remove', artistId });
       },
     };
   }),
